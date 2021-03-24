@@ -60,7 +60,7 @@ class UsersController extends Controller
             return response()->json(['error' => 'E-mail Required.']);
         } else {
             $user = User::where('email', [$request->email])->first();
-            if ($user) {
+            if ($user && ($user->id != $request->user_id)) {
                 return response()->json(['error' => 'Email já cadastrado']);
             } else {
                 User::updateOrCreate(['id' => $request->user_id],
