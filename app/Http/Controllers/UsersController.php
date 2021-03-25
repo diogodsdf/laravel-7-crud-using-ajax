@@ -15,6 +15,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
+        $head = "<title>Users</title>";
         if ($request->ajax()) {
             $data = User::latest()->get();
             return Datatables::of($data)
@@ -31,7 +32,7 @@ class UsersController extends Controller
                 ->make(true);
         }
 
-        return view('user');
+        return view('user', ['head' => $head]);
     }
 
     /**
