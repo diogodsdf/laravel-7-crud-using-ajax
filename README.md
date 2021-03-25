@@ -1,3 +1,4 @@
+<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 Require PHP 7.2.5
 Update for Laravel version 7x
 
