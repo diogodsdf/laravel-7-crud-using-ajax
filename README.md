@@ -10,8 +10,8 @@ Update for Laravel version 7x
 
 config init
 Step 1:
-git clone https://github.com/siddharth018/laravel-6-crud-using-ajax
-cd laravel-6-crud-using-ajax
+git clone https://github.com/diogo-foze/laravel-7-crud-using-ajax
+cd laravel-7-crud-using-ajax
 
 Step 2: 
 Configure database in .env file
