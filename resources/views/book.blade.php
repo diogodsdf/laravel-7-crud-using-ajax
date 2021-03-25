@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Laravel 6 Crud operation using ajax(Real Programmer)</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-</head>
-<body>
+@extends('master.master')
 
+@section('content')
 <div class="container">
-    <h1>Laravel 6 Crud with Ajax</h1>
+    <h3>Books</h3>
     <a class="btn btn-success" href="javascript:void(0)" id="createNewBook"> Create New Book</a>
     <table class="table table-bordered data-table">
         <thead>
@@ -60,11 +52,8 @@
 </div>
 
 
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+@endsection
+@section('js')
 <script type="text/javascript">
   $(function () {
       $.ajaxSetup({
@@ -112,9 +101,17 @@
           dataType: 'json',
           success: function (data) {
 
-              $('#bookForm').trigger("reset");
-              $('#ajaxModel').modal('hide');
-              table.draw();
+            if(data.success){
+                console.log('Success:', data);
+                alert(Object.values(data));
+                $('#bookForm').trigger("reset");
+                $('#ajaxModel').modal('hide');
+                table.draw();
+            }else{
+                console.log('Error:', data);
+                alert("Erro: "+ Object.values(data));
+                ('#saveBtn').html('Save Changes');
+            }
 
           },
           error: function (data) {
@@ -144,5 +141,4 @@
 
   });
 </script>
-</body>
-</html>
+@endsection

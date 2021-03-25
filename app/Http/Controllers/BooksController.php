@@ -15,6 +15,7 @@ class BooksController extends Controller
      */
     public function index(Request $request)
     {
+        $head = "<title>Books</title>";
         if ($request->ajax()) {
             $data = Book::latest()->get();
             return Datatables::of($data)
@@ -31,7 +32,7 @@ class BooksController extends Controller
                     ->make(true);
         }
 
-        return view('book');
+        return view('book',['head' => $head]);
     }
     /**
      * Show the form for creating a new resource.

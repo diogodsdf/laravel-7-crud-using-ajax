@@ -1,6 +1,17 @@
+<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+<p align="center">
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+</p>
+Require PHP 7.2.5
+Update for Laravel version 7x
+
+config init
 Step 1:
-git clone https://github.com/siddharth018/laravel-6-crud-using-ajax
-cd laravel-6-crud-using-ajax
+git clone https://github.com/diogo-foze/laravel-7-crud-using-ajax
+cd laravel-7-crud-using-ajax
 
 Step 2: 
 Configure database in .env file
