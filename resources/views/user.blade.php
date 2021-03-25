@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Users</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-</head>
-<body>
+@extends('master.master')
 
+@section('content')
 <div class="container">
-    <h1>Users</h1>
+    <h3>Users</h3>
     <a class="btn btn-success" href="javascript:void(0)" id="createNewUser"> Create New User</a>
     <table class="table table-bordered data-table">
         <thead>
@@ -67,95 +59,97 @@
     </div>
 </div>
 
-
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+@endsection
+@section('js')
 <script type="text/javascript">
-  $(function () {
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-    });
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('users.index') }}",
-        columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'name', name: 'name'},
-            {data: 'email', name: 'email'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-    });
-    $('#createNewUser').click(function () {
-        $('#saveBtn').val("create-user");
-        $('#user_id').val('');
-        $('#userForm').trigger("reset");
-        $('#modelHeading').html("Create New User");
-        $('#ajaxModel').modal('show');
-    });
-    $('body').on('click', '.editUser', function () {
-      var user_id = $(this).data('id');
-      $.get("{{ route('users.index') }}" +'/' + user_id +'/edit', function (data) {
-          $('#modelHeading').html("Edit User");
-          $('#saveBtn').val("edit-user");
+    $(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
+      var table = $('.data-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('users.index') }}",
+          columns: [
+              {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+              {data: 'name', name: 'name'},
+              {data: 'email', name: 'email'},
+              {data: 'action', name: 'action', orderable: false, searchable: false},
+          ]
+      });
+      $('#createNewUser').click(function () {
+          $('#saveBtn').val("create-user");
+          $('#user_id').val('');
+          $('#userForm').trigger("reset");
+          $('#modelHeading').html("Create New User");
           $('#ajaxModel').modal('show');
-          $('#user_id').val(data.id);
-          $('#name').val(data.name);
-          $('#email').val(data.email);
-          $('#password').val(data.password);
-      })
-   });
-    $('#saveBtn').click(function (e) {
-        e.preventDefault();
-        $(this).html('Save');
+      });
+      $('body').on('click', '.editUser', function () {
+        var user_id = $(this).data('id');
+        $.get("{{ route('users.index') }}" +'/' + user_id +'/edit', function (data) {
+            $('#modelHeading').html("Edit User");
+            $('#saveBtn').val("edit-user");
+            $('#ajaxModel').modal('show');
+            $('#user_id').val(data.id);
+            $('#name').val(data.name);
+            $('#email').val(data.email);
+            $('#password').val(data.password);
+        })
+     });
+      $('#saveBtn').click(function (e) {
+          e.preventDefault();
+          $(this).html('Save');
 
-        $.ajax({
-          data: $('#userForm').serialize(),
-          url: "{{ route('users.store') }}",
-          type: "POST",
-          dataType: 'json',
-          success: function (data) {
-            console.log('Success:', data);
-            alert(Object.values(data));
-              $('#bookForm').trigger("reset");
-              $('#ajaxModel').modal('hide');
-              table.draw();
+          $.ajax({
+            data: $('#userForm').serialize(),
+            url: "{{ route('users.store') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                if(data.success){
+                    console.log('Success:', data);
+                    alert(Object.values(data));
+                    $('#bookForm').trigger("reset");
+                    $('#ajaxModel').modal('hide');
+                    table.draw();
+                }else{
+                    console.log('Error:', data);
+                    alert("Erro: "+ Object.values(data));
+                    $('#saveBtn').html('Save Changes');
+                }
+            },
+            error: function (data) {
+                console.log('Error:', data);
+                //alert("Erro: "+ Object.values(data));
+                $('#saveBtn').html('Save Changes');
+            }
+        });
+      });
 
-          },
-          error: function (data) {
-              console.log('Error:', data);
-              //alert("Erro: "+ Object.values(data));
-              $('#saveBtn').html('Save Changes');
+      $('body').on('click', '.deleteUser', function () {
+
+          var user_id = $(this).data("id");
+          $confirm = confirm("Are You sure want to delete !");
+          if($confirm == true ){
+              $.ajax({
+                  type: "DELETE",
+                  url: "{{ route('users.store') }}"+'/'+user_id,
+                  success: function (data) {
+                      table.draw();
+                      alert(Object.values(data));
+
+                  },
+                  error: function (data) {
+                      console.log('Error:', data);
+                  }
+              });
           }
       });
+
     });
+  </script>
 
-    $('body').on('click', '.deleteUser', function () {
+@endsection
 
-        var user_id = $(this).data("id");
-        $confirm = confirm("Are You sure want to delete !");
-        if($confirm == true ){
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('users.store') }}"+'/'+user_id,
-                success: function (data) {
-                    table.draw();
-                    alert(Object.values(data));
-
-                },
-                error: function (data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
-    });
-
-  });
-</script>
-</body>
-</html>
