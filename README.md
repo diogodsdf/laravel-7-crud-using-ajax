@@ -30,7 +30,7 @@ Step 4:
 php artisan serve 
 
 Step 5: 
-http://127.0.0.1:8000/books
+http://127.0.0.1:8000/search
 
 
 
